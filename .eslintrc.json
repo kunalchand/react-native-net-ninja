@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "plugins": [
+    "import"
+  ],
+  "rules": {
+    "import/no-unresolved": "error",
+    "import/no-named-as-default": "off",
+    // 🚨 Enforce consistent casing in paths
+    "import/no-useless-path-segments": "error",
+    "import/no-duplicates": "error"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  }
+}
