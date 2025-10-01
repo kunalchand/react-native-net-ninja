@@ -60,8 +60,13 @@ export function BooksProvider({ children }) {
 
   async function deleteBook(id) {
     try {
+      await tablesdb.deleteRow(
+        APPWRITE_DATABASE_ID,
+        APPWRITE_BOOKS_TABLE_ID,
+        id
+      );
     } catch (error) {
-      console.log(error);
+      throw Error(error?.message ?? `Error deleting book by id: ${id}`);
     }
   }
 
@@ -76,6 +81,11 @@ export function BooksProvider({ children }) {
 
         if (events[0].includes("create")) {
           setBooks((prevBooks) => [...prevBooks, payload]);
+        }
+        if (events[0].includes("delete")) {
+          setBooks((prevBooks) =>
+            prevBooks.filter((book) => book.$id !== payload.$id)
+          );
         }
       });
     } else {
