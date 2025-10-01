@@ -43,7 +43,7 @@ export function UserProvider({ children }) {
       setUser(response);
     } catch (error) {
       setUser(null);
-      console.error("Get Logged In User Failed:", error?.message);
+      console.log(error);
     } finally {
       setAuthChecked(true);
     }
@@ -53,10 +53,11 @@ export function UserProvider({ children }) {
     getLoggedInUser();
   }, []);
 
-  const value = useMemo(
-    () => ({ user, login, register, logout, authChecked }),
-    [user] // only re-create if `user` changes
+  return (
+    <UserContext.Provider
+      value={{ user, login, register, logout, authChecked }}
+    >
+      {children}
+    </UserContext.Provider>
   );
-
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
