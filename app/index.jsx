@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
-import { Link } from "expo-router";
 
 // themed components
 import ThemedView from "../components/ThemedView";
 import ThemedLogo from "../components/ThemedLogo";
 import Spacer from "../components/Spacer";
 import ThemedText from "../components/ThemedText";
+import ThemedLink from "../components/ThemedLink";
 
 const Home = () => {
   return (
@@ -21,25 +21,25 @@ const Home = () => {
       <ThemedText>Reading List App</ThemedText>
       <Spacer />
 
-      <Link href="/login" style={styles.link}>
+      <ThemedLink href="/login" style={styles.link}>
         <ThemedText>Login Page</ThemedText>
-      </Link>
+      </ThemedLink>
 
-      <Link href="/register" style={styles.link}>
+      <ThemedLink href="/register" style={styles.link}>
         <ThemedText>Register Page</ThemedText>
-      </Link>
+      </ThemedLink>
 
-      <Link href="/profile" style={styles.link}>
+      <ThemedLink href="/profile" style={styles.link}>
         <ThemedText>Profile Page</ThemedText>
-      </Link>
+      </ThemedLink>
 
-      <Link href="/books" style={styles.link}>
+      <ThemedLink href="/books" style={styles.link}>
         <ThemedText>Books Page</ThemedText>
-      </Link>
+      </ThemedLink>
 
-      <Link href="/create" style={styles.link}>
+      <ThemedLink href="/create" style={styles.link}>
         <ThemedText>Create Page</ThemedText>
-      </Link>
+      </ThemedLink>
     </ThemedView>
   );
 };

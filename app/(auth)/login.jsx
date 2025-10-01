@@ -4,17 +4,17 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { Link } from "expo-router";
 import { useState } from "react";
 
 import { Colors } from "../../constants/Colors";
+import { useUser } from "../../hooks/useUser";
 // themed components
 import ThemedView from "../../components/ThemedView";
 import ThemedText from "../../components/ThemedText";
 import ThemedButton from "../../components/ThemedButton";
 import Spacer from "../../components/Spacer";
 import ThemedTextInput from "../../components/ThemedTextInput";
-import { useUser } from "../../hooks/useUser";
+import ThemedLink from "../../components/ThemedLink";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -66,11 +66,11 @@ const Login = () => {
         {error && <ThemedText style={styles.error}>{error}</ThemedText>}
 
         <Spacer height={100} />
-        <Link href="/register" style={styles.link}>
+        <ThemedLink href="/register" style={styles.link}>
           <ThemedText style={{ textAlign: "center" }}>
             Register instead
           </ThemedText>
-        </Link>
+        </ThemedLink>
       </ThemedView>
     </TouchableWithoutFeedback>
   );
