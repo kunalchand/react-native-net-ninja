@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 
 import { getEnv } from "../utils/env";
-import { tablesdb } from "../lib/appwrite";
+import { tablesdb, client } from "../lib/appwrite";
 import { ID, Permission, Query, Role } from "react-native-appwrite";
 import { useUser } from "../hooks/useUser";
 
@@ -22,7 +22,6 @@ export function BooksProvider({ children }) {
       );
 
       setBooks(response.rows);
-      console.log("response.rows", response.rows);
     } catch (error) {
       throw Error(error?.message ?? "Error fetching books");
     }
@@ -61,11 +60,27 @@ export function BooksProvider({ children }) {
   }
 
   useEffect(() => {
+    let unsubscribe;
+    const channel = `databases.${APPWRITE_DATABASE_ID}.tables.${APPWRITE_BOOKS_TABLE_ID}.rows`;
+
     if (user) {
       fetchBooks();
+      unsubscribe = client.subscribe(channel, (response) => {
+        const { payload, events } = response;
+
+        if (events[0].includes("create")) {
+          setBooks((prevBooks) => [...prevBooks, payload]);
+        }
+      });
     } else {
       setBooks([]);
     }
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, [user]);
 
   return (
