@@ -27,7 +27,14 @@ export function UserProvider({ children }) {
     }
   }
 
-  async function logout() {}
+  async function logout() {
+    try {
+      await account.deleteSession({ sessionId: "current" });
+      setUser(null);
+    } catch (error) {
+      throw new Error(error?.message ?? "Logout Failed");
+    }
+  }
 
   const value = useMemo(
     () => ({ user, login, register, logout }),
