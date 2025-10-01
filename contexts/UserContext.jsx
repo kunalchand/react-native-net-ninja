@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useMemo } from "react";
 import { ID } from "react-native-appwrite";
 
 import { account } from "../lib/appwrite";
@@ -14,7 +14,7 @@ export function UserProvider({ children }) {
       const response = await account.get();
       setUser(response);
     } catch (error) {
-      console.log("error", error);
+      throw new Error(error?.message ?? "Login Failed");
     }
   }
 
@@ -23,15 +23,16 @@ export function UserProvider({ children }) {
       await account.create({ userId: ID.unique(), email, password });
       await login(email, password);
     } catch (error) {
-      console.log("error", error);
+      throw new Error(error?.message ?? "Registration Failed");
     }
   }
 
   async function logout() {}
 
-  return (
-    <UserContext.Provider value={{ user, login, register, logout }}>
-      {children}
-    </UserContext.Provider>
+  const value = useMemo(
+    () => ({ user, login, register, logout }),
+    [user] // only re-create if `user` changes
   );
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
