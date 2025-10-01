@@ -1,13 +1,17 @@
 import { createContext, useState } from "react";
 
 import { getEnv } from "../utils/env";
+import { tablesdb } from "../lib/appwrite";
+import { ID, Permission, Role } from "react-native-appwrite";
+import { useUser } from "../hooks/useUser";
 
-const { APPWRITE_DATABASE_ID } = getEnv();
+const { APPWRITE_DATABASE_ID, APPWRITE_BOOKS_TABLE_ID } = getEnv();
 
 export const BooksContext = createContext();
 
 export function BooksProvider({ children }) {
   const [books, setBooks] = useState([]);
+  const { user } = useUser();
 
   async function fetchBooks() {
     try {
@@ -25,8 +29,19 @@ export function BooksProvider({ children }) {
 
   async function createBook(data) {
     try {
+      const newBook = await tablesdb.createRow(
+        APPWRITE_DATABASE_ID,
+        APPWRITE_BOOKS_TABLE_ID,
+        ID.unique(),
+        { ...data, userid: user.$id },
+        [
+          Permission.read(Role.user(user.$id)),
+          Permission.update(Role.user(user.$id)),
+          Permission.delete(Role.user(user.$id)),
+        ]
+      );
     } catch (error) {
-      console.log(error);
+      throw Error(error?.message ?? "Error creating book");
     }
   }
 

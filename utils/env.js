@@ -26,4 +26,8 @@ export const getEnv = () => ({
     "EXPO_PUBLIC_APPWRITE_DATABASE_ID",
     process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID
   ),
+  APPWRITE_BOOKS_TABLE_ID: requireEnv(
+    "EXPO_PUBLIC_APPWRITE_BOOKS_TABLE_ID",
+    process.env.EXPO_PUBLIC_APPWRITE_BOOKS_TABLE_ID
+  ),
 });
