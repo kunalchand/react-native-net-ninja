@@ -11,7 +11,7 @@ import ThemedButton from "../../components/ThemedButton";
 const Profile = () => {
   const [error, setError] = useState(null);
 
-  const { logout } = useUser();
+  const { user, logout } = useUser();
 
   const handleLogout = async () => {
     setError(null);
@@ -26,7 +26,7 @@ const Profile = () => {
   return (
     <ThemedView style={styles.container}>
       <ThemedText title={true} style={styles.heading}>
-        Your Email
+        Email: {user.email}
       </ThemedText>
       <Spacer />
 
