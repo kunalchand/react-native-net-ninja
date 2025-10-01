@@ -29,8 +29,14 @@ export function BooksProvider({ children }) {
 
   async function fetchBookById(id) {
     try {
+      const response = await tablesdb.getRow(
+        APPWRITE_DATABASE_ID,
+        APPWRITE_BOOKS_TABLE_ID,
+        id
+      );
+      return response;
     } catch (error) {
-      console.log(error);
+      throw Error(error?.message ?? `Error fetching book by id: ${id}`);
     }
   }
 
