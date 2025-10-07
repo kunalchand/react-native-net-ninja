@@ -21,7 +21,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const { login } = useUser();
+  const { login, loginWithOAuth } = useUser();
 
   const handleLogin = async () => {
     setError(null);
@@ -30,6 +30,16 @@ const Login = () => {
       await login(email, password);
     } catch (error) {
       setError(error?.message ?? "Login Failed");
+    }
+  };
+
+  const handleOAuthLogin = async ({ provider }) => {
+    setError(null);
+
+    try {
+      await loginWithOAuth(provider);
+    } catch (error) {
+      setError(error?.message ?? `OAuth ${provider} Login Failed`);
     }
   };
 
@@ -59,6 +69,15 @@ const Login = () => {
 
         <ThemedButton onPress={handleLogin}>
           <Text style={{ color: "#f2f2f2" }}>Login</Text>
+        </ThemedButton>
+
+        <Spacer />
+
+        <ThemedButton
+          onPress={() => handleOAuthLogin("google")}
+          style={{ backgroundColor: "#2f5ec4" }}
+        >
+          <Text style={{ color: "#f2f2f2" }}>Sign in with Google</Text>
         </ThemedButton>
 
         <Spacer />
